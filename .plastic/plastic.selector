@@ -1,0 +1,4 @@
+repository "Tactics@Quadravar@cloud"
+  path "/"
+    br "/main"
+    co "/main"

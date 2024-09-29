@@ -1,0 +1,13 @@
+﻿AP : Action Points
+PP : Passive Points
+HP : Health Points        
+
+ATK : Attack Power
+MATK : Magic Attack Power
+        
+DEF : Physical Defense
+MDEF : Magic Defense
+
+Initiative : Determines the order of turns in battle.
+
+MOBILITY : Movement Points,
