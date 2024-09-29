@@ -1,12 +1,5 @@
 ﻿namespace Abilities
 {
-    public enum AbilityCoreTypes
-    {
-        ACTIVE,
-        REACTIVE,
-        PASSIVE,
-    }
-    
     public enum AbilityTypes
     {
         Attack,
@@ -28,7 +21,8 @@
     {
         Preparation,
         Primary,
-        Reaction
+        Reaction,
+        Passive
     }
     
     public enum AbilityTags

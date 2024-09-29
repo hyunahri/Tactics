@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace CoreLib.Complex_Types
 {
+    /// <summary> C# implementation of pythons defaultdict   </summary>
     public class DefaultDict<TKey, TVal> : Dictionary<TKey, TVal>
     {
         // Default constructor with optional equality comparer
@@ -12,15 +13,14 @@ namespace CoreLib.Complex_Types
                 throw new ArgumentException("Missing default factory for ref type, use the other constructor");
         }
         
-        // Constructor with default factory that accepts TKey and optional equality comparer
+        //<summary> Constructor with default factory that accepts TKey and optional equality comparer
         public DefaultDict(Func<TKey, TVal> defaultFactory, IEqualityComparer<TKey> comparer = null) 
             : base(comparer ?? EqualityComparer<TKey>.Default)
         {
             this.defaultFactory = defaultFactory ?? throw new ArgumentNullException(nameof(defaultFactory));
         }
         
-        // Constructor with default factory and optional equality comparer
-        
+        //<summary> Constructor with default factory and optional equality comparer
         public DefaultDict(Func<TVal> defaultFactory, IEqualityComparer<TKey> comparer = null) 
             : this(_ => defaultFactory(), comparer)
         {

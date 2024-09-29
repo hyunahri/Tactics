@@ -10,21 +10,36 @@ namespace Combat
     {
         public BattleRound(int i = 0) => Index = i;
 
-        public BattleRound(Battle battle, QueuedAction action, BattleRound? prior = null)
+        public BattleRound(Battle battle, QueuedAction? action, BattleRound? prior = null)
         {
             Index = prior is null ? 0 : prior.Index + 1;
             Battle = battle;
             
             RootAction = action;
             Actions = new LinkedList<QueuedAction>();
-            Actions.AddFirst(RootAction);
+            if (RootAction != null)
+                Actions.AddFirst(RootAction);
             
             States = new Dictionary<Character, CharacterBattleAlias>();
             UnitStates = new Dictionary<Unit, UnitState>();
 
-            if (prior is null)
-                return;
+            if (prior == null) BuildFromBattle(battle);
+            else BuildFromPrior(prior);
+        }
+
+        private void BuildFromBattle(Battle battle)
+        {
+            //Create clones of characters
+            foreach (var character in battle.AllCharacters)
+                States.Add(character, new CharacterBattleAlias(character));
             
+            //Create clones of units
+            foreach (var unit in new []{battle.AttackerUnit, battle.DefenderUnit})
+                UnitStates.Add(unit, new UnitState(unit, null));
+        }
+        
+        private void BuildFromPrior(BattleRound prior)
+        {
             //Clone prior character states 
             foreach (var pair in prior.States) 
                 States.Add(pair.Key, new CharacterBattleAlias(pair.Value));
@@ -33,6 +48,8 @@ namespace Combat
             foreach (var pair in prior.UnitStates) 
                 UnitStates.Add(pair.Key, new UnitState(pair.Key, pair.Value));
         }
+
+
         
         //Core
         public readonly int Index;

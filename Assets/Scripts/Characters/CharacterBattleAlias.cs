@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Abilities;
 using Combat;
 using CoreLib.Complex_Types;
 
@@ -107,11 +108,37 @@ namespace Characters
         
         
         //Action Logic, 
-        public bool ReactToEvent(string eventKey, BattleRound currentEvent, out QueuedAction action)
+        public bool ReactToEvent(string eventKey, BattleRound currentEvent, out QueuedAction? action) //TODO: Implement
         {
-            action = new QueuedAction();
+            action = null;// new QueuedAction();
             
             return false;
+        }
+        
+        public QueuedAction? GetNextPrimaryAction(BattleRound lastRound)
+        {
+            QueuedAction? nextAction = null;
+            foreach (var abilitySlot in GetRootCharacter().AbilityManager.GetOrderedAbilitiesByType(ActionTypes.Primary))
+            {
+                if (!abilitySlot.CanUse(lastRound, this, out var priorityTarget)) continue;
+                nextAction = new QueuedAction(this, priorityTarget, abilitySlot.ability);
+                break;
+
+            }
+            return nextAction;
+        }
+
+        public QueuedAction? GetPreparation(BattleRound currentRound)
+        {
+            QueuedAction? nextAction = null;
+            foreach (var abilitySlot in GetRootCharacter().AbilityManager.GetOrderedAbilitiesByType(ActionTypes.Preparation))
+            {
+                if (!abilitySlot.CanUse(currentRound, this, out var priorityTarget)) continue;
+                nextAction = new QueuedAction(this, priorityTarget, abilitySlot.ability);
+                break;
+
+            }
+            return nextAction;
         }
     }
 }

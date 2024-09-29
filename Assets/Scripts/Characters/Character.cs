@@ -79,6 +79,8 @@ namespace Characters
         //Stats
         public CharacterStatsManager StatsManager;
         
+        //Abilities
+        public CharacterAbilityManager AbilityManager;
         
         //On Modify
 
