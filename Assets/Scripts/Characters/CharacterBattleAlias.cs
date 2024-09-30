@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Abilities;
 using Combat;
 using CoreLib.Complex_Types;
@@ -54,6 +53,24 @@ namespace Characters
         //
         public List<StatusEffect> Statuses = new List<StatusEffect>();
 
+        
+        //Experience
+        public int XPGainedByAlias = 0;
+        public void AddXP(int amount) => XPGainedByAlias += amount;
+        
+        
+        
+        //
+        public void Heal(int amount, bool overheal = false)
+        {
+            HP = overheal ? HP + amount : Math.Min(MaxHP, HP + amount);
+        }
+        
+        public void TakeDamage(int amount, bool overkill = true)
+        {
+            HP = overkill ? HP - amount : Math.Max(0, HP - amount);
+        }
+        
         public void AddStatus(StatusEffect statusEffect)
         {
             Statuses.Add(statusEffect);

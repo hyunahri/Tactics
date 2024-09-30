@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using CoreLib.Complex_Types;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Abilities
 {
     //<summary> Data storage object defining an ability, immutable at runtime.</summary>
+    [CreateAssetMenu(menuName = "Abilities/Ability")]
     public class Ability : ScriptableObject
     {
         [Header("Identity")]
@@ -23,10 +27,21 @@ namespace Abilities
         public bool HasTag(AbilityTags tag) => Tags.Contains(tag);
 
         [Space]
+        [Header("Collections - Be Careful")]
+        [Space]
+        [Space]
         [Header("Strategies")] //Processed in the order they are listed
-        [SerializeField]public AbilityTargetingStrategy TargetingStrategy; //Quickly determines which characters are valid targets for an ability, result is unordered
-        [SerializeField]public List<AbilityRequirementStrategy> FixedRequirements; //Must be satisfied for ability to be used on a target, defined by the ability
+        [Tooltip("Quickly determines which characters are valid targets for an ability, result is unordered")]
+        [SerializeReference]public List<AbilityTargetingStrategy> TargetingStrategies = new List<AbilityTargetingStrategy>(); //TODO for now only first strategy is actually used.
+        
+        [Tooltip("Must be satisfied for ability to be used on a target, defined by the ability")]
+        [Space]
+        [Header("Requirements")]
+        [SerializeReference]public List<AbilityRequirementStrategy> FixedRequirements = new List<AbilityRequirementStrategy>(); //
+        
+        [Tooltip("Effects that are applied to targets when the ability is used")]
+        [Space]
+        [Header("Effects")]
+        [SerializeReference]public List<AbilityEffect> Effects = new List<AbilityEffect>(); 
     }
-    
-    //<summary> Abilities must be slotted in order to be used by a character. Slotting allows a player to define additional requirements and prioritization strategies for when the ability will be used. </summary>
 }

@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace CoreLib.Complex_Types
 {
     /// <summary> C# implementation of pythons defaultdict   </summary>
-    public class DefaultDict<TKey, TVal> : Dictionary<TKey, TVal>
+    public class DefaultDict<TKey, TVal> : Dictionary<TKey, TVal>, ISerializationCallbackReceiver
     {
+        [SerializeField][SerializeReference]private List<KeyValuePair<TKey, TVal>> entries = new List<KeyValuePair<TKey, TVal>>();
+        
         // Default constructor with optional equality comparer
         public DefaultDict(IEqualityComparer<TKey> comparer = null) : base(comparer ?? EqualityComparer<TKey>.Default)
         {
@@ -40,6 +43,30 @@ namespace CoreLib.Complex_Types
                 return base[key];
             }
             set => base[key] = value;
+        }
+
+        
+        
+        
+        public void OnBeforeSerialize()
+        {
+            entries ??= new List<KeyValuePair<TKey, TVal>>();
+            entries.Clear();
+            foreach (var kvp in this)
+            {
+                entries.Add(new KeyValuePair<TKey, TVal>(kvp.Key, kvp.Value));
+            }
+        }
+
+        public void OnAfterDeserialize()
+        {
+            entries ??= new List<KeyValuePair<TKey, TVal>>();
+            Clear();
+            foreach (var kvp in entries)
+            {
+                this[kvp.Key] = kvp.Value;
+            }
+            
         }
     }
 }

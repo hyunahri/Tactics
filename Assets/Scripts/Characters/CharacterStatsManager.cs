@@ -33,7 +33,7 @@ namespace Characters
             }
         }
         
-        public void ApplyOnLevelOffsets(OnLevelOffsets onLevelOffsets)
+        private void ApplyOnLevelOffsets(OnLevelOffsets onLevelOffsets)
         {
             foreach (var pair in onLevelOffsets.StatIncreases)
                 ClassStats[pair.Item1] += pair.Item2;

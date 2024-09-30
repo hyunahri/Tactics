@@ -5,16 +5,6 @@ using Units;
 
 namespace Characters
 {
-
-    public interface ICharacter
-    {
-        public string GetName();
-        public int GetStat(string statName);
-        public int Level { get; }
-        public Character GetRootCharacter();
-    }
-    
-    
     [System.Serializable]
     public sealed class Character : ICharacter
     {
@@ -22,10 +12,11 @@ namespace Characters
         {
             if(@class == null)
                 throw new ArgumentNullException(nameof(@class));
-            SetClass(@class);
+            ExperienceManager = new CharacterExperienceManager(this);
             StatsManager = new CharacterStatsManager(this);
             EquipmentManager = new CharacterEquipmentManager(this);
             EquipmentManager.OnEquipmentChanged.AddListener(StatsManager.RebuildEquipmentOffsets);
+            SetClass(@class);
         }
         
         public Unit Unit;
@@ -42,7 +33,8 @@ namespace Characters
         public Gender Gender;
         
         public int GetStat(string statName) => StatsManager.GetStat(statName);
-        
+        public int Level => StatsManager.GetStat("level");
+
         //
         private int currentHP { get; set; }
         public int CurrentHP
@@ -58,13 +50,13 @@ namespace Characters
         public bool IsKnockedOut => CurrentHP <= 0;
         public bool IsDead => MaxHP <= 0;
         
-        //Leveling
-        public int Level { get; set; } = 1;
         public Character GetRootCharacter() => this;
-
-        public int Experience = 0;
-        public int ExperienceToNextLevel = 100;
         
+        //ICharacter 
+        public void AddXP(int amount) => ExperienceManager.AddExperience(amount);
+        public void Heal(int amount, bool overheal = false) => CurrentHP = overheal ? CurrentHP + amount : Math.Min(MaxHP, CurrentHP + amount);
+        public void TakeDamage(int amount, bool overkill = true) => CurrentHP = overkill ? CurrentHP - amount : Math.Max(0, CurrentHP - amount);
+
         //Class
         private void SetClass(Class @class)
         {
@@ -73,6 +65,10 @@ namespace Characters
         }
         private Class class_;
         public Class Class => class_;
+        
+        //Experience
+        public CharacterExperienceManager ExperienceManager;
+        
         //Equipment
         public CharacterEquipmentManager EquipmentManager;
         

@@ -6,7 +6,7 @@ using Units;
 
 namespace Abilities
 {
-    
+    [System.Serializable]
     public abstract class AbilityPrioritizationStrategy
     {
         public abstract string Name { get; }

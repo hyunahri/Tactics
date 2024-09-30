@@ -1,28 +1,46 @@
 ﻿using System;
+using Abilities;
 using Characters;
 using CoreLib.Complex_Types;
 using UnityEngine;
 
 namespace Items
 {
-    public class Equipment
+    public class Equipment : Item, IAbilitySource
     {
-        public EquipmentSlotTypes Slot;
+        public Equipment(EquipmentTemplate data)
+        {
+            Data = data;
+            Name = data.Name;
+            Description = data.Description;
+            CurrentDurability = data.MaxDurability;
+            Bonuses = new DefaultDict<string, int>(() => 0, StringComparer.OrdinalIgnoreCase);
+            foreach (var bonus in data.Bonuses)
+            {
+                Bonuses[bonus.Key] = bonus.Value;
+            }
+        }
+
+        //Instance
+        public readonly EquipmentTemplate Data;
         public Character? EquippedCharacter;
         public bool IsEquipped => EquippedCharacter != null;
+        
+        //
+        public string GetName() => Name;
+        public override bool IsStackable => true;
 
+        //Bonuses
         public DefaultDict<string, int> Bonuses = new DefaultDict<string, int>(() => 0, StringComparer.OrdinalIgnoreCase);
-        public int GetBonus(string stat) =>  UseDurability ? Mathf.FloorToInt(Bonuses[stat] * DurabilityPercentage) : Bonuses[stat];
+        public int GetDurabilityScaledBonus(string stat) =>  Data.UseDurability ? Mathf.FloorToInt(Bonuses[stat] * DurabilityPercentage) : Bonuses[stat];
+        public int GetUnscaledBonus(string stat) => Bonuses[stat];
         
         //Durability
-        public bool UseDurability => MaxDurability > 0;
         public int CurrentDurability;
-        public int MaxDurability;
+        public void Repair() => CurrentDurability = Data.MaxDurability;
+        public float DurabilityPercentage => (float)CurrentDurability / Data.MaxDurability;
 
-        
-        public bool CanBeRepaired = true;
-        public void Repair() => CurrentDurability = MaxDurability;
-        
-        public float DurabilityPercentage => (float)CurrentDurability / MaxDurability;
+        //Abilities
+        public bool EligibleForAbility(Ability ability, ICharacter character) => EquippedCharacter != null && EquippedCharacter == character;
     }
 }

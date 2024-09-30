@@ -33,7 +33,7 @@ namespace Characters
                 if (!equipment.EquippedCharacter.EquipmentManager.TryRemoveEquip(equipment))
                     return false;
             
-            var slot = Slots.FirstOrDefault(x => x.SlotType == equipment.Slot && x.Equipment == null);
+            var slot = Slots.FirstOrDefault(x => x.SlotType == equipment.Data.Slot && x.Equipment == null);
             if (slot == null) return false;
             
             slot.Equipment = equipment;

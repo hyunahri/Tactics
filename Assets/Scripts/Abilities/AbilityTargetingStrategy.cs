@@ -5,6 +5,7 @@ using Combat;
 
 namespace Abilities
 {
+    [System.Serializable]
     //<summary> Determines which characters are valid targets for an ability, result is unordered </summary>
     public abstract class AbilityTargetingStrategy
     {
