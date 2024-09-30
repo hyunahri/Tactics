@@ -5,6 +5,9 @@ using Items;
 
 namespace Characters
 {
+    /// <summary>
+    ///  Manages the equipment of a character, including which equipment they have equipped and the order of that equipment.
+    /// </summary>
     public class CharacterEquipmentManager
     {
         public CharacterEquipmentManager(Character character)

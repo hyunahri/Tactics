@@ -3,6 +3,9 @@ using CoreLib.Complex_Types;
 
 namespace Game
 {
+    /// <summary>
+    /// Various data and flags that define a campaign. Will serve as root of save file later.
+    /// </summary>
     public class GameState
     {
         public string PlayerName;

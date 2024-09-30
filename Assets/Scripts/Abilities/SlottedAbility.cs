@@ -5,16 +5,16 @@ using Characters;
 using Combat;
 using UnityEngine;
 
-//Move to Character namespace later
 namespace Abilities
 {
-    //<summary> Abilities must be slotted in order to be used by a character. Slotting allows a player to define additional requirements and prioritization strategies for when the ability will be used. </summary>
+    ///<summary>
+    /// Abilities must be slotted in order to be used by a character. Slotting allows a player to define additional requirements and prioritization strategies for when the ability will be used. </summary>
     public class SlottedAbility
     {
         public OwnedAbility Owned;
         public Ability ability => Owned.Ability; //The ability that is slotted
         [SerializeField] public int Priority; //Determines the order in which abilities are checked for use by the character, lower is higher priority
-        public bool IsPassive => ability.ActionType == ActionTypes.Passive;
+        public bool IsPassive => ability.ActionType == ActionTypes.Passive; //Passive abilities are automatically slotted so they can modify the character's stats, but don't need to be checked for use
 
         [SerializeField] public List<AbilityRequirementStrategy> DefinedRequirements; //Must be satisfied for ability to be used on a target, defined by the player
         [SerializeField] public List<AbilityPrioritizationStrategy> PrioritizationStrategies; //Determines the order in which targets are selected
@@ -22,28 +22,25 @@ namespace Abilities
 
         //todo All the below goes to a new class
 
-        public bool CanUse(BattleRound e, CharacterBattleAlias user, out CharacterBattleAlias? priorityTarget)
+        public bool CanUse(BattleRound r, CharacterBattleAlias user, out CharacterBattleAlias? priorityTarget)
         {
             priorityTarget = null;
 
-            if (ability.ActionType == ActionTypes.Passive)
-            {
-                Debug.LogError($"Passive ability somehow slotted");
-                return false;
-            }
+            if(IsPassive) return false; //Passive abilities are automatic
 
-            if (user.IsKnockedOut || user.IsStunned || user.AP < ability.ActionPoints || user.PP < ability.ReactionPoints)
+            //Check hard requirements
+            if (user.IsKnockedOut || user.IsStunned || user.AP < ability.ActionPoints || user.PP < ability.PassivePoints)
                 return false;
             if (ability.HasTag(AbilityTags.Magic) && user.IsSilenced)
                 return false;
 
             // Get all valid targets
-            var validAliases = ability.TargetingStrategies.First().GetValidTargets(e, user); //TODO use multiple strategies
+            var validAliases = ability.TargetingStrategies.First().GetValidTargets(r, user); //TODO use multiple strategies
             if (validAliases.Count == 0) return false;
 
             // Cull targets that don't meet requirements
             var requirements = ability.FixedRequirements.Concat(DefinedRequirements);
-            validAliases = validAliases.Where(t => requirements.All(req => req.Evaluate(e, user, t))).ToList();
+            validAliases = validAliases.Where(t => requirements.All(req => req.Evaluate(r, user, t))).ToList();
 
             if (validAliases.Count == 0) return false;
 
@@ -52,25 +49,20 @@ namespace Abilities
             for (int i = 0; i < PrioritizationStrategies.Count; i++)
             {
                 var strategy = PrioritizationStrategies[i];
-                var comparer = strategy.GetComparer(e, user);
+                var comparer = strategy.GetComparer(r, user);
                 sortedTargets = i == 0 ? validAliases.OrderBy(t => t, comparer) : sortedTargets.ThenBy(t => t, comparer);
             }
 
             // If no prioritization strategies, apply a default ordering strategy, probably target the enemy directly in front and then move laterally later on
             sortedTargets ??= sortedTargets.OrderBy(t => t.GetRootCharacter().Name);
 
-            switch (ability.ActionType)
+            return ability.ActionType switch
             {
-                case ActionTypes.Preparation:
-                    return CanUsePreparation(e, sortedTargets, user, out priorityTarget);
-                case ActionTypes.Primary:
-                    return CanUsePrimary(e, sortedTargets, user, out priorityTarget);
-                case ActionTypes.Reaction:
-                    return CanUseReaction(e, sortedTargets, user, out priorityTarget);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                ActionTypes.Preparation => CanUsePreparation(r, sortedTargets, user, out priorityTarget),
+                ActionTypes.Primary => CanUsePrimary(r, sortedTargets, user, out priorityTarget),
+                ActionTypes.Reaction => CanUseReaction(r, sortedTargets, user, out priorityTarget),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         //<summary> Determines if the ability can be used as a preparation, and which target to prioritize </summary>

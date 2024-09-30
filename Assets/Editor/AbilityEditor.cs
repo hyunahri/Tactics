@@ -5,8 +5,6 @@ using System.Linq;
 using System.Collections.Generic;
 using Abilities;
 
-
-
 /// <summary>
 /// Custom editor for the Ability scriptable object.
 /// Allows editing strategies without needing to create a new scriptable object for each one.

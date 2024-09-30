@@ -4,6 +4,9 @@ using Abilities;
 
 namespace Characters
 {
+    /// <summary>
+    /// Manages the abilities of a character, including which abilities they have, which are slotted, and the order of those abilities.
+    /// </summary>
     public class CharacterAbilityManager
     {
         public CharacterAbilityManager(Character character) => this.character = character;

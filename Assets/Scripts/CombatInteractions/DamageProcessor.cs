@@ -3,6 +3,9 @@ using Game;
 
 namespace CombatInteractions
 {
+    /// <summary>
+    /// Use this to handle all damage applications and automate experience handling.
+    /// </summary>
     public static class DamageProcessor
     {
         //Mitigate
@@ -38,6 +41,7 @@ namespace CombatInteractions
         //Other
         public static void ApplyHeal(ICharacter user, ICharacter target, int healAmount)
         {
+            //Accounts for overhealing and global modifier when calculating experience
             int experience = Formulas.GetHealExperience(user.GetRootCharacter(), target.GetRootCharacter(), healAmount);
             user.AddXP(experience);
             target.Heal(healAmount);

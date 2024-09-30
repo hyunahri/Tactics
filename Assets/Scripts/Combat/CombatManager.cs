@@ -157,8 +157,8 @@ namespace Combat
                 step > stepLimit //limit the number of steps to prevent infinite loops
                 || roundsSinceLastAction > maxRoundsSinceLastAction
                 || CurrentBattle.AllCharacters.All(x => x.IsKnockedOut)
-                || (CurrentBattle.AllCharacters.All(x => x.GetStat("ap") == 0) && CurrentBattle.AllCharacters.All(x => x.GetStat("pp") == 0)
-                );
+                //|| (CurrentBattle.AllCharacters.All(x => x.GetStat("ap") == 0) && CurrentBattle.AllCharacters.All(x => x.GetStat("pp") == 0))
+                ;
 
             void AppendEvent(BattleRound e)
             {

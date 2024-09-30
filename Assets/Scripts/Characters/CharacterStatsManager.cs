@@ -20,7 +20,7 @@ namespace Characters
 
         public void RebuildClassStats()
         {
-            //Rebuild stats after changing class
+            //Rebuild stats after changing class or leveling up/down
             ClassStats.Clear();
             for (int i = 0; i < character.Level; i++)
             {
@@ -31,13 +31,13 @@ namespace Characters
                     ApplyOnLevelOffsets(onLevel);
                 }
             }
+            character.OnChanged.Invoke();
         }
         
         private void ApplyOnLevelOffsets(OnLevelOffsets onLevelOffsets)
         {
             foreach (var pair in onLevelOffsets.StatIncreases)
                 ClassStats[pair.Item1] += pair.Item2;
-            character.OnChanged.Invoke();
         }
 
         public void RebuildEquipmentOffsets()

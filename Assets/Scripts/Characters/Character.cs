@@ -5,6 +5,10 @@ using Units;
 
 namespace Characters
 {
+    /// <summary>
+    /// Core class for individual characters. Only modify this outside of combat, when in combat you should be creating CharacterBattleAliases.
+    /// At the end of combat, apply the final CharacterBattleAlias to the Character.
+    /// </summary>
     [System.Serializable]
     public sealed class Character : ICharacter
     {
@@ -37,7 +41,7 @@ namespace Characters
 
         //
         private int currentHP { get; set; }
-        public int CurrentHP
+        public int CurrentHP  //You should usually be accessing this through DamageProcessor
         {
             get => currentHP;
             set
@@ -53,7 +57,7 @@ namespace Characters
         public Character GetRootCharacter() => this;
         
         //ICharacter 
-        public void AddXP(int amount) => ExperienceManager.AddExperience(amount);
+        public void AddXP(int amount) => ExperienceManager.AddExperience(amount);  //Let DamageProcessor handle this in combat
         public void Heal(int amount, bool overheal = false) => CurrentHP = overheal ? CurrentHP + amount : Math.Min(MaxHP, CurrentHP + amount);
         public void TakeDamage(int amount, bool overkill = true) => CurrentHP = overkill ? CurrentHP - amount : Math.Max(0, CurrentHP - amount);
 
@@ -82,13 +86,5 @@ namespace Characters
 
         
         
-    }
-
-
-    public abstract class StatusEffect
-    {
-        public string StatusName { get; }
-        //public bool CheckValidity(CharacterCombatState state);
-        public DefaultDict<string, int> Bonuses { get; }
     }
 }

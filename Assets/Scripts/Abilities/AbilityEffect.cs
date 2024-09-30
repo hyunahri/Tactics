@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Abilities
 {
-    [System.Serializable]
+    [Serializable]
     public class AbilityEffect
     {
         //Params
@@ -20,14 +20,14 @@ namespace Abilities
         public virtual void ApplyEffect(BattleRound e, ICharacter user, ICharacter target){}
     }
     
-    [System.Serializable]
+    [Serializable]
     public class PhysicalDamageEffect : AbilityEffect
     {
         public PhysicalDamageEffect(){}
         
         [Header("Params")]
         [Tooltip("Percentage of attack stat used in damage calculation. 1-100 as int")]
-        [SerializeField][Range(0,100)] public int potency;
+        [SerializeField][Range(0,300)] public int potency;
 
         //Description
         public override string GetDescription() => $"Deals {potency}% of user's attack as physical damage";
@@ -38,12 +38,12 @@ namespace Abilities
         public override void ApplyEffect(BattleRound e, ICharacter user, ICharacter target) => DamageProcessor.ApplyRawPhysicalDamage(user, target, CalculateRawDamage(user));
     }
     
-    [System.Serializable]
+    [Serializable]
     public class MagicDamageEffect : AbilityEffect
     {
         //Params
         [Tooltip("Percentage of matk stat used in damage calculation. 1-100 as int")] 
-        [SerializeField][Range(0,100)] public int potency;
+        [SerializeField][Range(0,300)] public int potency;
 
         //Description
         public override string GetDescription() => $"Deals {potency}% of user's attack as magic damage";
@@ -54,12 +54,13 @@ namespace Abilities
         public override void ApplyEffect(BattleRound e, ICharacter user, ICharacter target) => DamageProcessor.ApplyRawPhysicalDamage(user, target, CalculateRawDamage(user));
     }
     
-    [System.Serializable]
+    [Serializable]
     public class CustomDamageEffect : AbilityEffect
     {
         //Params
         public bool IsRawDamage; //If true, will pass through the normal raw damage applicator, otherwise applied directly.
         public bool IsPhysicalDamage; //If true, will use the physical damage applicator, otherwise the magic damage applicator.
+        
         [Space]
         [SerializeField][TextArea(2,3)]public string DamageFormula;
         
@@ -84,6 +85,35 @@ namespace Abilities
                 else
                     DamageProcessor.ApplyRawMagicalDamage(user, target, damage);
         }
+    }
+    
+    //heal effect
+    [Serializable]
+    public class MagicHealEffect : AbilityEffect
+    {
+        //Params
+        [Tooltip("Percentage of matk stat used in damage calculation. 1-100 as int")] 
+        [SerializeField][Range(0,300)] public int potency;
 
+        //Description
+        public override string GetDescription() => $"Heals {potency}% of user's magic attack";
+        public override string GetDescriptionForUser(ICharacter user) => $"Heals <b>{CalculateRawHeal(user)}</b> health";
+
+        //Application
+        protected virtual int CalculateRawHeal(ICharacter user) => (int)Math.Ceiling(user.GetStat("matk") * (potency / 100f));
+        public override void ApplyEffect(BattleRound e, ICharacter user, ICharacter target) => DamageProcessor.ApplyHeal(user, target, CalculateRawHeal(user));
+    }
+    
+    public class FlatHealEffect : AbilityEffect
+    {
+        //Params
+        public int healAmount;
+
+        //Description
+        public override string GetDescription() => $"Heals {healAmount} health";
+        public override string GetDescriptionForUser(ICharacter user) => $"Heals <b>{healAmount}</b> health";
+
+        //Application
+        public override void ApplyEffect(BattleRound e, ICharacter user, ICharacter target) => DamageProcessor.ApplyHeal(user, target, healAmount);
     }
 }

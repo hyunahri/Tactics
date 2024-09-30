@@ -1,5 +1,10 @@
 ﻿namespace Items
 {
+    /// <summary>
+    /// There's no fundamental difference between weapon types, it's just used to control itemization for the different classes.
+    /// i.e. a warrior can only equip a weapon of type SWORD1H or SWORD2H, etc.
+    /// Should try to keep to general themes within each type though, maybe 2H reduces initiative but increases damage, etc.
+    /// </summary>
     public enum WeaponTypes
     {
         DAGGER = 1000,

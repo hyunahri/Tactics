@@ -6,7 +6,12 @@ using UnityEngine.Serialization;
 
 namespace Abilities
 {
-    //<summary> Data storage object defining an ability, immutable at runtime.</summary>
+    
+    ///<summary> Data storage object defining an ability
+    ///ALL actions are abilities, including simple things like swinging a sword.
+    ///Equipment and classes provide abilities to characters, and characters will have many abilities.
+    ///The Ability class here is just the lowest level data, it will be wrapped in an OwnedAbility and then a SlottedAbility, see those classes for details.
+    ///</summary>
     [CreateAssetMenu(menuName = "Abilities/Ability")]
     public class Ability : ScriptableObject
     {
@@ -15,17 +20,23 @@ namespace Abilities
         public string Description; 
         
         [Space]
-        [Header("Costs")]
-        [SerializeField]public int ActionPoints;
-        [SerializeField]public int ReactionPoints;
+        [Header("Costs")] //Costs are subtracted from the character's AP and PP when the ability is used and are a hard requirement for use.
+        [SerializeField]public int ActionPoints; //Primary abilities MUST have an AP cost or combat will break
+        [SerializeField]public int PassivePoints;
         
         
         [Space]
         [Header("Classification")]
         [SerializeField]public ActionTypes ActionType; //The type of action this ability is, used for determining if it can be used in a given context
-        [SerializeField]public List<AbilityTags> Tags; //Tags that can be used to filter abilities
-        public bool HasTag(AbilityTags tag) => Tags.Contains(tag);
+        [SerializeField]public List<AbilityTags> Tags; //Tags that can be used to filter abilities //TODO clone to a hashset at runtime, hashsets can't be serialized in unity
+        public bool HasTag(AbilityTags tag) => Tags.Contains(tag); //TODO move to OwnedAbility.cs
 
+        //--------------------------------------------------------------------------------------------------------------
+        
+        //DO NOT MODIFY ANYTHING BELOW WITHOUT TALKING TO ME FIRST, IT WILL BREAK UNITY'S EDITOR
+        
+        //--------------------------------------------------------------------------------------------------------------
+        
         [Space]
         [Header("Collections - Be Careful")]
         [Space]

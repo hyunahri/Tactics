@@ -3,6 +3,9 @@ using Characters;
 
 namespace Game
 {
+    /// <summary>
+    /// Stick formulas here so they can be consistent across the game.
+    /// </summary>
     public static class Formulas
     {
         public static int ExperienceToNextLevel(int nextLevel) => (int) ((nextLevel * (nextLevel * 0.4f) + 5) * 90);
@@ -12,7 +15,7 @@ namespace Game
         public static int GetAttackExperience(Character attacker, Character defender, int damageDone) //Should also work for heals
         {
             int experience = ExperiencePerKill(attacker.Level, defender.Level);
-            return (int)(experience * (float)((float)damageDone / defender.MaxHP));
+            return (int)(experience * ((float)damageDone / defender.MaxHP));
         }
         
         public static int GetHealExperience(Character healer, Character target, int healAmount)

@@ -6,7 +6,12 @@ using CoreLib.Complex_Types;
 
 namespace Characters
 {
-    //<summary>The state of a character at a given point in time during combat</summary>
+    //<summary>
+    //The state of a character at a given point in time during combat
+    //This is a shallow copy of the character, with the current HP, AP, PP, and status effects
+    //We modify this during combat, and then apply the changes to the character at the end of combat
+    //That way we can simulate the battle without modifying the character itself until the result is accepted.
+    //</summary>
     public class CharacterBattleAlias : ICharacter
     {
         public CharacterBattleAlias(Character character)

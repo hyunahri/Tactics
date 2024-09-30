@@ -1,5 +1,6 @@
 ﻿namespace Characters
 {
+    //Interface for Character and CharacterState, mainly exists to allow for abilities to work both in and out of combat.
     public interface ICharacter
     {
         public string GetName();

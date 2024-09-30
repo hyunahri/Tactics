@@ -11,3 +11,5 @@ MDEF : Magic Defense
 Initiative : Determines the order of turns in battle.
 
 MOBILITY : Movement Points,
+
+xp : Experience modifier

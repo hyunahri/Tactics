@@ -1,14 +1,17 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Characters;
-using NCalc;
 using UnityEngine;
-using Int32 = System.Int32;
 
+//In a perfect world we'd have a Utility namespace, but that will cause about 1000 errors with unity so we'll just stick it here for now.
 namespace Game
 {
+    /// <summary>
+    /// NCALC based formula evaluator that can evaluate expressions with variables in the form of [variableName]
+    /// Just don't fuck with it, it's fine.
+    /// </summary>
     public static class FormulaEvaluator
     {
         private static bool DebugExpressions = false;
@@ -159,7 +162,7 @@ namespace Game
         private static HashSet<string> ExtractVariables(string input)
         {
             // Pattern to find substrings within square brackets
-            string pattern = @"\[([^\]]+)\]";
+            string pattern = @"\[([^\]]+)\]"; //Hail regex and its herald, ChatGPT
             var matches = Regex.Matches(input, pattern);
 
             // Use a HashSet to avoid duplicates, with case-insensitive comparison

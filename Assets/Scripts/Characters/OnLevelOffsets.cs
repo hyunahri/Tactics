@@ -5,13 +5,15 @@ using UnityEngine;
 
 namespace Characters
 {
+    /// <summary>
+    /// Used to store the offsets that should be applied to a character when they level up.
+    /// Each offset is associated with a particular Class. These are only setup in the editor and shouldn't be modified at runtime.
+    /// 
+    /// </summary>
+    /// 
     [System.Serializable]
     public class OnLevelOffsets
     {
-        public OnLevelOffsets()
-        {
-        }
-        
         [Header("Stats")]
         [SerializeField] public List<Pair<string, int>> StatIncreases = new List<Pair<string, int>>();
         

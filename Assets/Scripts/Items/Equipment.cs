@@ -17,7 +17,7 @@ namespace Items
             Bonuses = new DefaultDict<string, int>(() => 0, StringComparer.OrdinalIgnoreCase);
             foreach (var bonus in data.Bonuses)
             {
-                Bonuses[bonus.Key] = bonus.Value;
+                Bonuses[bonus.Item1] = bonus.Item2;
             }
         }
 
