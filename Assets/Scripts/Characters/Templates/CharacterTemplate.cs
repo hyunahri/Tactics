@@ -7,7 +7,9 @@ namespace Characters
     [CreateAssetMenu(fileName = "Character Template", menuName = "Characters/Character")]
     public class CharacterTemplate : ScriptableObject
     {
-        public string Key;
+        public bool IsUnique = false;
+        
+        public string Key; 
         public string Name;
 
         public Class Class;

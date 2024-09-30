@@ -23,11 +23,19 @@ namespace Characters
             SetClass(@class);
         }
         
-        public Unit Unit;
-        
         //Events
         public CoreEvent OnChanged = new CoreEvent();
         public DefaultDict<string, CoreEvent<Character>> OnEvent = new DefaultDict<string, CoreEvent<Character>>(() => new CoreEvent<Character>(), StringComparer.OrdinalIgnoreCase);
+        
+        //----------------
+        
+        public Unit? Unit;
+        public bool IsAssignedToUnit => Unit != null;
+
+        public string CharacterKey; //Only for unique characters
+        public bool IsUnique => !string.IsNullOrEmpty(CharacterKey);
+        
+       
         
         //
         public string? OverrideName;
@@ -40,26 +48,33 @@ namespace Characters
         public int Level => StatsManager.GetStat("level");
 
         //
-        private int currentHP { get; set; }
-        public int CurrentHP  //You should usually be accessing this through DamageProcessor
+        private int hp { get; set; }
+        public int HP  //You should usually be accessing this through DamageProcessor
         {
-            get => currentHP;
+            get => hp;
             set
             {
-                currentHP = value;
+                hp = value;
                 OnChanged.Invoke();
             }
         }
         public int MaxHP => StatsManager.GetStat("hp");
-        public bool IsKnockedOut => CurrentHP <= 0;
+        public bool IsKnockedOut => HP <= 0;
         public bool IsDead => MaxHP <= 0;
         
         public Character GetRootCharacter() => this;
         
         //ICharacter 
         public void AddXP(int amount) => ExperienceManager.AddExperience(amount);  //Let DamageProcessor handle this in combat
-        public void Heal(int amount, bool overheal = false) => CurrentHP = overheal ? CurrentHP + amount : Math.Min(MaxHP, CurrentHP + amount);
-        public void TakeDamage(int amount, bool overkill = true) => CurrentHP = overkill ? CurrentHP - amount : Math.Max(0, CurrentHP - amount);
+        public void Heal(int amount, bool overheal = false) => HP = overheal ? HP + amount : Math.Min(MaxHP, HP + amount);
+        public void TakeDamage(int amount, bool overkill = true) => HP = overkill ? HP - amount : Math.Max(0, HP - amount);
+        public Unit? GetUnit() => Unit;
+
+        public void SetUnit(Unit? u)
+        {
+            Unit = u;
+            OnChanged.Invoke();
+        }
 
         //Class
         private void SetClass(Class @class)

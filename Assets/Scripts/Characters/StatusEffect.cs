@@ -1,6 +1,6 @@
 ﻿using CoreLib.Complex_Types;
 
-namespace Characters
+namespace Characters //Probably move to abilities
 {
     //Mostly placeholder for now. Intent is to use this for in-combat buffs and debuffs which can be applied and removed dynamically. Low priority for now.
     public abstract class StatusEffect

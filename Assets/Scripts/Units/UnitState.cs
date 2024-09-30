@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using Characters;
+using Game;
 
 namespace Units
 {
     //<summary> A unit at a given point in time during combat.
-    // Used mainly to manage changes to the formation that occur during combat.</summary>
+    //Only exists during combat and only needed if we implement abilities that can change the formation during combat.
+    //</summary>
     public class UnitState : Unit
     {
         public UnitState(Unit u, UnitState? prior)
@@ -12,22 +14,15 @@ namespace Units
             Root = u;
             Prior = prior;
             
-            //Setup character array
-            var template = prior != null ? prior.CharactersInFormation : u.CharactersInFormation;
-            CharactersInFormation = new Character?[template.GetLength(0), template.GetLength(1)];
-            for (var i = 0; i < template.GetLength(0); i++)
+            //Clone the formation
+            var templateDict = u.GetReadonlyFormation();
+            CharactersInFormation = new Character?[Globals.UnitColumns, Globals.UnitRows];
+            foreach (var kvp in templateDict)
             {
-                for (var j = 0; j < template.GetLength(1); j++)
-                {
-                    CharactersInFormation[i, j] = template[i, j];
-                }
-            }
-            
-            foreach (var c in CharactersInFormation)
-            {
-                if (c is null)
+                CharactersInFormation[kvp.Key.x, kvp.Key.y] = kvp.Value;
+                if(kvp.Value is null)
                     continue;
-                Characters.Add(c);
+                Characters.Add(kvp.Value);
             }
         }
 
@@ -35,6 +30,6 @@ namespace Units
         public UnitState? Prior;
         public bool IsFirstState => Prior is null;
         
-        public List<Character> Characters = new List<Character>();
+        public List<ICharacter> Characters = new List<ICharacter>();
     }
 }

@@ -2,6 +2,7 @@
 {
     public abstract class Item
     {
+        public string Key;
         public string Name;
         public string Description;
 

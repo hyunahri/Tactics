@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Abilities;
 using Combat;
 using CoreLib.Complex_Types;
+using Units;
+using UnityEngine;
 
 namespace Characters
 {
@@ -17,7 +19,7 @@ namespace Characters
         public CharacterBattleAlias(Character character)
         {
             Character = character;
-            HP = character.CurrentHP;
+            HP = character.HP;
             
             AP = MaxAP;
             PP = MaxPP;
@@ -38,7 +40,7 @@ namespace Characters
         public Character Character;
         
         //
-        public int HP = 0;
+        public int HP { get; private set; }
         public int MaxHP => GetStat("hp");
         public bool IsKnockedOut => HP <= 0;
         public bool IsDead => MaxHP <= 0;        
@@ -58,6 +60,8 @@ namespace Characters
         //
         public List<StatusEffect> Statuses = new List<StatusEffect>();
 
+        //Unit
+        public UnitState? UnitState;
         
         //Experience
         public int XPGainedByAlias = 0;
@@ -75,7 +79,16 @@ namespace Characters
         {
             HP = overkill ? HP - amount : Math.Max(0, HP - amount);
         }
-        
+
+        public Unit? GetUnit() => UnitState;
+
+        public void SetUnit(Unit? u)
+        {
+            if(u is not Units.UnitState state)
+                throw new ArgumentException("Attempted to assign Alias to non-state unit");
+            UnitState = state;
+        }
+
         public void AddStatus(StatusEffect statusEffect)
         {
             Statuses.Add(statusEffect);

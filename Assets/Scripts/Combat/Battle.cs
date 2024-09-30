@@ -15,14 +15,14 @@ namespace Combat
         {
             AttackerUnit = attackerUnit;
             DefenderUnit = defenderUnit;
-            foreach (Character? c in attackerUnit.CharactersInFormation)
+            foreach (Character? c in attackerUnit.GetICharacters())
             {
                 if(c is null)
                     continue;
                 AllCharacters.Add(c);
                 AttackerCharacters.Add(c);
             }
-            foreach (Character? c in defenderUnit.CharactersInFormation)
+            foreach (Character? c in defenderUnit.GetICharacters())
             {
                 if(c is null)
                     continue;

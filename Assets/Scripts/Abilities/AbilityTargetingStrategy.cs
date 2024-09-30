@@ -25,7 +25,7 @@ namespace Abilities
             // Try to get alive targets from the front row
             var targets = targUnit.GetRow(0).Concat(targUnit.GetRow(1))
                 .Where(c => !c.IsKnockedOut) // Filter out dead characters
-                .Select(c => e.States[c]) // Convert to CharacterCombatState
+                .Select(c => e.States[c.GetRootCharacter()]) // Convert to CharacterCombatState
                 .ToList();
             return targets;
         }
@@ -39,12 +39,12 @@ namespace Abilities
         public override List<CharacterBattleAlias> GetValidTargets(BattleRound e, CharacterBattleAlias user)
         {
             var targUnit = e.Battle.GetEnemyUnit(user);
-            int row = targUnit.GetRow(user.GetRootCharacter());
+            int row = targUnit.GetRowOf(user.GetRootCharacter());
 
             // Try to get alive targets from the front row
             var targets = targUnit.GetRow(row)
                 .Where(c => !c.IsKnockedOut) // Filter out dead characters
-                .Select(c => e.States[c]) // Convert to CharacterCombatState
+                .Select(c => e.States[c.GetRootCharacter()]) // Convert to CharacterCombatState
                 .ToList();
             return targets;
         }
@@ -58,12 +58,12 @@ namespace Abilities
         public override List<CharacterBattleAlias> GetValidTargets(BattleRound e, CharacterBattleAlias user)
         {
             var targUnit = e.Battle.GetEnemyUnit(user);
-            int row = targUnit.GetRow(user.GetRootCharacter());
+            int row = targUnit.GetRowOf(user.GetRootCharacter());
 
             // Try to get alive targets from the front row
             var targets = targUnit.GetRow(1 - row)
                 .Where(c => !c.IsKnockedOut) // Filter out dead characters
-                .Select(c => e.States[c]) // Convert to CharacterCombatState
+                .Select(c => e.States[c.GetRootCharacter()]) // Convert to CharacterCombatState
                 .ToList();
             return targets;
         }
@@ -81,7 +81,7 @@ namespace Abilities
             // Try to get alive targets from the front row
             var targets = targUnit.GetRow(0)
                 .Where(c => !c.IsKnockedOut) // Filter out dead characters
-                .Select(c => e.States[c]) // Convert to CharacterCombatState
+                .Select(c => e.States[c.GetRootCharacter()]) // Convert to CharacterCombatState
                 .ToList();
 
             // If no alive targets in front row, try back row
@@ -89,7 +89,7 @@ namespace Abilities
             {
                 targets = targUnit.GetRow(1)
                     .Where(c => !c.IsKnockedOut)
-                    .Select(c => e.States[c])
+                    .Select(c => e.States[c.GetRootCharacter()])
                     .ToList();
             }
 
@@ -109,7 +109,7 @@ namespace Abilities
             // Try to get alive targets from the front row
             var targets = targUnit.GetRow(1)
                 .Where(c => !c.IsKnockedOut) // Filter out dead characters
-                .Select(c => e.States[c]) // Convert to CharacterCombatState
+                .Select(c => e.States[c.GetRootCharacter()]) // Convert to CharacterCombatState
                 .ToList();
 
             // If no alive targets in front row, try back row
@@ -117,7 +117,7 @@ namespace Abilities
             {
                 targets = targUnit.GetRow(0)
                     .Where(c => !c.IsKnockedOut)
-                    .Select(c => e.States[c])
+                    .Select(c => e.States[c.GetRootCharacter()])
                     .ToList();
             }
 
@@ -136,7 +136,7 @@ namespace Abilities
             // Try to get alive targets from the front row
             var targets = targUnit.GetRow(0).Concat(targUnit.GetRow(1))
                 .Where(c => !c.IsKnockedOut) // Filter out dead characters
-                .Select(c => e.States[c]) // Convert to CharacterCombatState
+                .Select(c => e.States[c.GetRootCharacter()]) // Convert to CharacterCombatState
                 .ToList();
             return targets;
         }
@@ -150,12 +150,12 @@ namespace Abilities
         public override List<CharacterBattleAlias> GetValidTargets(BattleRound e, CharacterBattleAlias user)
         {
             var targUnit = e.Battle.GetOwnUnit(user);
-            int row = targUnit.GetRow(user.GetRootCharacter());
+            int row = targUnit.GetRowOf(user.GetRootCharacter());
 
             // Try to get alive targets from the front row
             var targets = targUnit.GetRow(row)
                 .Where(c => !c.IsKnockedOut) // Filter out dead characters
-                .Select(c => e.States[c]) // Convert to CharacterCombatState
+                .Select(c => e.States[c.GetRootCharacter()]) // Convert to CharacterCombatState
                 .ToList();
             return targets;
         }
@@ -169,12 +169,12 @@ namespace Abilities
         public override List<CharacterBattleAlias> GetValidTargets(BattleRound e, CharacterBattleAlias user)
         {
             var targUnit = e.Battle.GetOwnUnit(user);
-            int row = targUnit.GetRow(user.GetRootCharacter());
+            int row = targUnit.GetRowOf(user.GetRootCharacter());
 
             // Try to get alive targets from the front row
             var targets = targUnit.GetRow(1 - row)
                 .Where(c => !c.IsKnockedOut) // Filter out dead characters
-                .Select(c => e.States[c]) // Convert to CharacterCombatState
+                .Select(c => e.States[c.GetRootCharacter()]) // Convert to CharacterCombatState
                 .ToList();
             return targets;
         }

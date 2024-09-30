@@ -13,11 +13,11 @@ namespace Economy
         void IService.PerformService(object input) => PerformService((Unit)input);
         
         public bool EligibleForService(Unit input) =>
-            input.GetCharacters() is { Count: > 0 } chars && chars.Any(x => x.CurrentHP < x.MaxHP);
+            input.GetICharacters() is { Count: > 0 } chars && chars.Any(x => x.HP < x.GetStat("maxHP"));
         
         public void PerformService(Unit input)
         {
-            foreach (Character character in input.GetCharacters()) 
+            foreach (ICharacter character in input.GetICharacters()) 
                 character.Heal(9999);
         }
     }

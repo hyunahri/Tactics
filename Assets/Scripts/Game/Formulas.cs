@@ -21,7 +21,7 @@ namespace Game
         public static int GetHealExperience(Character healer, Character target, int healAmount)
         {
             //Don't give experience for overhealing
-            int maxHeal = target.MaxHP - target.CurrentHP;
+            int maxHeal = target.MaxHP - target.HP;
             int compensatedHealAmount = Math.Min(healAmount, maxHeal); 
             return (int)(Globals.XPModifier_Healing * GetAttackExperience(healer, target, compensatedHealAmount));
         }

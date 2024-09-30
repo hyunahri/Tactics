@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CoreLib.Complex_Types;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace CoreLib.Extensions
@@ -98,6 +99,19 @@ namespace CoreLib.Extensions
                 return true;
             }
             return false;
+        }
+
+        public static Dictionary<int2, T> ToDict<T>(this T[,] array)
+        {
+            Dictionary<int2, T> dict = new Dictionary<int2, T>();
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    dict.Add(new int2(i, j), array[i, j]);
+                }
+            }
+            return dict;
         }
     }
 
