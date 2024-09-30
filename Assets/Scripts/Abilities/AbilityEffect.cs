@@ -62,7 +62,7 @@ namespace Abilities
         public bool IsPhysicalDamage; //If true, will use the physical damage applicator, otherwise the magic damage applicator.
         
         [Space]
-        [SerializeField][TextArea(2,3)]public string DamageFormula;
+        [SerializeField][TextArea(2,3)]public string DamageFormula; //ie "[user.stat.atk] * 2 + 5"
         
         //Description
         public override string GetDescription() => $"TODO";

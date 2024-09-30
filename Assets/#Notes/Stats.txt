@@ -1,15 +1,36 @@
-﻿AP : Action Points
+﻿Put character stats here for reference
+The actual lookup is not case sensitive
+--------------------------------------------------------------------------
+COMBAT
+
+AP : Action Points
 PP : Passive Points
-HP : Health Points        
 
-ATK : Attack Power
-MATK : Magic Attack Power
+HP : Max Health Points        
+
+ATK : Attack Power, determines damage dealt by physical attacks
+MATK : Magic Attack Power, determines damage dealt by magic attacks
         
-DEF : Physical Defense
-MDEF : Magic Defense
+DEF : Physical Defense, reduces damage from physical attacks
+MDEF : Magic Defense, reduces damage from magic attacks
 
-Initiative : Determines the order of turns in battle.
+INITIATIVE : Determines the order of turns in battle. todo probably reduce this to just 'init'
 
-MOBILITY : Movement Points,
+ACCURACY : Determines the chance to hit, compare to enemy's evasion
+EVASION : Determines the chance to dodge, compare to enemy's accuracy
 
-xp : Experience modifier
+CAPTURE : Determines the chance to capture defeated enemy, compare to enemy's ESCAPE
+ESCAPE : Determines the chance to escape from battle if defeated, compare to enemy's CAPTURE
+
+--------------------------------------------------------------------------
+
+TACTICAL
+
+MOBILITY : Movement Points, TODO
+
+--------------------------------------------------------------------------
+
+SPECIAL
+
+xp : Experience modifier, int, 0 is default (ie gaining experience at 100% rate), 100 is 100% more experience, -100 is 100% less experience.
+

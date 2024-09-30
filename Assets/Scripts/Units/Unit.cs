@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Characters;
 using CoreLib;
 
@@ -20,6 +21,8 @@ namespace Units
         public Character?[,] CharactersInFormation = new Character?[2,3];
         public List<Character> GetRow(int i) => new List<Character> {CharactersInFormation[i, 0], CharactersInFormation[i, 1], CharactersInFormation[i, 2]};
         public int GetRow(Character c) => c == CharactersInFormation[0, 0] || c == CharactersInFormation[0, 1] || c == CharactersInFormation[0, 2] ? 0 : 1;
+        
+        public List<Character> GetCharacters() => new List<Character> {CharactersInFormation[0, 0], CharactersInFormation[0, 1], CharactersInFormation[0, 2], CharactersInFormation[1, 0], CharactersInFormation[1, 1], CharactersInFormation[1, 2]}.Where(x => x != null).ToList();
         
         //Generate a seed for every enemy unit that shows up on the tactical map. Reroll after attacking that enemy or using a skill against it.
         public Dictionary<Unit, int> Seeds = new Dictionary<Unit, int>();

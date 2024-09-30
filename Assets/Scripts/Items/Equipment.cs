@@ -31,10 +31,10 @@ namespace Items
         public override bool IsStackable => true;
 
         //Bonuses
-        public DefaultDict<string, int> Bonuses = new DefaultDict<string, int>(() => 0, StringComparer.OrdinalIgnoreCase);
-        public int GetDurabilityScaledBonus(string stat) =>  Data.UseDurability ? Mathf.FloorToInt(Bonuses[stat] * DurabilityPercentage) : Bonuses[stat];
-        public int GetUnscaledBonus(string stat) => Bonuses[stat];
-        
+        public DefaultDict<string, int> Bonuses = new DefaultDict<string, int>(() => 0, StringComparer.OrdinalIgnoreCase); //Defines bonuses to a characters stats while the item is equipped
+        public int GetDurabilityScaledBonus(string stat) =>  Data.UseDurability ? Mathf.FloorToInt(Bonuses[stat] * DurabilityPercentage) : Bonuses[stat]; //Returns the bonus scaled by durability
+        public int GetUnscaledBonus(string stat) => Bonuses[stat]; //Returns the bonus without scaling by durability
+         
         //Durability
         public int CurrentDurability;
         public void Repair() => CurrentDurability = Data.MaxDurability;

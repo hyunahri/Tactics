@@ -8,10 +8,11 @@ namespace Game
     /// </summary>
     public class GameState
     {
+        public static GameState Current = new GameState();
+        
         public string PlayerName;
 
         public int Day;
-        public float Hour;
         
         public DefaultDict<string, int> Inventory = new DefaultDict<string, int>(StringComparer.OrdinalIgnoreCase);
         public int Money => Inventory["f"];
