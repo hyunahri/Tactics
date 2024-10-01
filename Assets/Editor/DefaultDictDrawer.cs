@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Editor
 {
+    /*
     [CustomEditor(typeof(MonoBehaviour), true)]
     public class DefaultDictEditor : UnityEditor.Editor
     {
@@ -33,5 +34,5 @@ namespace Editor
 
             serializedObject.ApplyModifiedProperties();
         }
-    }
+    }*/
 }

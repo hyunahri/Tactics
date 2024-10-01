@@ -1,5 +1,47 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-465589786612754444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd5ce549e0b646a7adf00b1b9fc8603d, type: 3}
+  m_Name: GrassRenderFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  bendingShader: {fileID: 4800000, guid: 83f1a74da0594f2439500e813fc6108b, type: 3}
+  settings:
+    enableBending: 1
+    bendingRenderRange: 50
+    forwardPerspectiveCorrection: 1
+    ditheringNoise: {fileID: 2800000, guid: 81200413a40918d4d8702e94db29911c, type: 3}
+    animateDithering: 1
+    ignoreSceneView: 0
+    ignoreOverlayCamera: 1
+--- !u!114 &-73525352245870267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2086e3e143e14a2abcd3b0dbc77a10ac, type: 3}
+  m_Name: StylizedWaterRenderFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  screenSpaceReflectionSettings:
+    enable: 0
+  directionalCaustics: 0
+  displacementPrePassSettings:
+    enable: 0
+    range: 500
+    cellSize: 0.25
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24,8 +66,10 @@ MonoBehaviour:
     probeSamplingDebugMesh: {fileID: 0}
     probeSamplingDebugTexture: {fileID: 0}
     probeVolumeBlendStatesCS: {fileID: 0}
-  m_RendererFeatures: []
-  m_RendererFeatureMap: 
+  m_RendererFeatures:
+  - {fileID: -73525352245870267}
+  - {fileID: -465589786612754444}
+  m_RendererFeatureMap: 454166e914c9fafef497e54d8ee489f9
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}

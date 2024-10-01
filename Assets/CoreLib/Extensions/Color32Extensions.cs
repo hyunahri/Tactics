@@ -3,6 +3,7 @@ using UnityEngine;
 namespace CoreLib.Extensions
 {
 
+
     public static class Color32Extensions
     {
         public static Color32 RandomColor32(this Color32 color)
