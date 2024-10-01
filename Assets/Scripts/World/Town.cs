@@ -4,6 +4,10 @@ using Units;
 
 namespace World
 {
+    /// <summary>
+    /// Permanent structure on campaign map.
+    /// Players can interact with towns to buy/sell items, receive quests and use services.
+    /// </summary>
     public class Town
     {
         //Identity

@@ -11,11 +11,10 @@ namespace Game
         public static GameState Current = new();
 
         public GameState()
-        {
-            Preferences.FromFile();
+        { 
+            Preferences.FromFile(); //Load preferences from disk
         }
         
-        public CharacterManager CharacterManager = new();
         
         //Time
         public int Day;
@@ -25,14 +24,8 @@ namespace Game
         public Player Player = new();
         
         
-        //Preferences
-        public bool AlwaysRun = false;
-        
-        
-        
+        //World
         public DefaultDict<string, int> WorldValues = new(StringComparer.OrdinalIgnoreCase);
         public DefaultDict<string, bool> WorldFlags = new(StringComparer.OrdinalIgnoreCase);
-        
-
     }
 }

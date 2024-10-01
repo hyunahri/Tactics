@@ -8,13 +8,9 @@ namespace Game
 {
     public class Player
     {
-        public Player()
-        {
-            PlayerValues["maxUnitSize"] = 2;
-        }
+        public Character? Leader; //The character which represents the player
         
-        public Character? Leader;
-        
+        //Gold - Basic currency
         [SerializeField] private int gold;
         public int Gold { get => gold; set => gold = value; }
         public bool TrySpendGold(int amount)
@@ -24,6 +20,7 @@ namespace Game
             return true;
         }
 
+        //Renown - Gates various mechanics and is relatively slow to grow. 
         public int Renown;
         public int RenownLevel
         {
@@ -37,18 +34,13 @@ namespace Game
         }
         
         //Progression
-        public int MaxUnitSize => PlayerValues["maxUnitSize"];
-        
-        //
-        public DefaultDict<string, int> PlayerValues = new(StringComparer.OrdinalIgnoreCase);
-        public DefaultDict<string, bool> PlayerFlags = new(StringComparer.OrdinalIgnoreCase);
+        public PlayerCharacterManager GlobalCharacterManager = new();
         
         //Inventory
         public PlayerInventory Inventory = new();
         
-        //Rapport
+        //Rapport - Relationship between pairs of characters, affecting quests and interactions.
         public DefaultDict<ReversiblePair<string>, int> Rapport = new(() => 0); //Dictionary of character pairs and their rapport with each other. The key is reversible and rapport is mirrored.
-        
         public Dictionary<string, RapportEventResult> RapportEventResults = new(StringComparer.OrdinalIgnoreCase); //Dictionary of rapport events and their results, a non-null value means the event has been completed.
         public bool CompletedRapportEvent(RapportEventTemplate template) => CompletedRapportEvent(template.RapportEventKey);
         public bool CompletedRapportEvent(string key) => RapportEventResults.ContainsKey(key);

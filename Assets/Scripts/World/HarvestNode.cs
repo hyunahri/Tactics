@@ -4,9 +4,15 @@ using Game;
 using Items;
 using UnityEditor;
 using UnityEngine;
+using Sprite = UnityEngine.ProBuilder.Shapes.Sprite;
 
 namespace World
 {
+    /// <summary>
+    /// World interactable that provides items when harvested.
+    /// Needs time to reset after being harvested
+    /// 
+    /// </summary>
     public class HarvestNode : IWorldInteractable
     {
         //Data
@@ -20,8 +26,10 @@ namespace World
         
         
         //Interaction
-        public bool CanInteract() => CanHarvest();
+        public string GetName() => throw new System.NotImplementedException();
+        public Sprite GetInteractionIcon() => throw new System.NotImplementedException();
 
+        public bool CanInteract() => CanHarvest();
         public void Interact()
         {
             if (!CanHarvest())
