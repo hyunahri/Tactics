@@ -1,59 +1,132 @@
-﻿using UnityEngine;
+﻿using SpriteSystem;
+using UnityEngine;
 
-namespace SpriteSystem
+[RequireComponent(typeof(SpriteRenderer))]
+public class CharacterSpriteController : MonoBehaviour
 {
-    [RequireComponent(typeof(SpriteRenderer))]
-    public class CharacterSpriteController : MonoBehaviour
+    public SpriteData spriteData; // Reference to the ScriptableObject
+
+    private SpriteRenderer spriteRenderer;
+
+    private Direction currentDirection = Direction.South; // Default direction
+    private int currentFrame = 0;
+    private float animationTimer = 0f;
+    
+    private SpriteData.DirectionalAnimation currentAnimation;
+    private bool isMirrored = false;
+    private bool isMoving = false; // Track if the player is moving
+
+    private void Awake()
     {
-        public SpriteData spriteData; // Reference to the ScriptableObject
-        private SpriteRenderer spriteRenderer;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        SetDirection(currentDirection, false); // Initialize with the default direction
+    }
 
-        private void Awake()
+    private void Update()
+    {
+        return;
+        if (isMoving)
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            // Animate when moving
         }
-
-        public void OnMovement(Vector2 deltaMove)
+        else
         {
-            Direction direction = SpriteDirection.GetDirectionFromVector(deltaMove);
-            UpdateSprite(direction);
+            // Set the first frame of the current animation (idle frame) when not moving
+            if (currentAnimation != null && currentAnimation.sprites.Length > 0)
+            {
+                spriteRenderer.sprite = currentAnimation.sprites[0]; // Set to idle frame (first frame)
+                spriteRenderer.flipX = isMirrored;
+            }
         }
-
-        public void UpdateSprite(Direction direction)
+    }
+    
+    public void OnMovement(Vector3 movement)
+    {
+        if (movement == Vector3.zero)
         {
-            switch (direction)
+            SetDirection(currentDirection, false);
+            return;
+        }
+        else
+        {
+            SetDirection(SpriteDirection.GetDirectionFromVector(movement), true);
+        }
+    }
+
+    // Set the direction and switch to the corresponding animation
+    public void SetDirection(Direction direction, bool moving)
+    {
+        isMoving = moving; // Update the movement state
+        
+        // Only change direction and animation if there's movement
+        if (currentDirection != direction || !isMoving)
+        {
+            currentDirection = direction;
+            currentFrame = 0; // Reset the frame
+
+            switch (currentDirection)
             {
                 case Direction.North:
-                    SetSprite(spriteData.north, false);
+                    SetAnimation(spriteData.north, false);
                     break;
                 case Direction.NorthEast:
-                    SetSprite(spriteData.northEast, false);
+                    SetAnimation(spriteData.northEast, false);
                     break;
                 case Direction.East:
-                    SetSprite(spriteData.east, false);
+                    SetAnimation(spriteData.east, false);
                     break;
                 case Direction.SouthEast:
-                    SetSprite(spriteData.southEast, false);
+                    SetAnimation(spriteData.southEast, false);
                     break;
                 case Direction.South:
-                    SetSprite(spriteData.south, false);
+                    SetAnimation(spriteData.south, false);
                     break;
                 case Direction.SouthWest:
-                    SetSprite(spriteData.southWest, spriteData.useMirroringForSouthWest);
+                    SetAnimation(spriteData.southEast, spriteData.useMirroringForSouthWest);
                     break;
                 case Direction.West:
-                    SetSprite(spriteData.west, spriteData.useMirroringForWest);
+                    SetAnimation(spriteData.east, spriteData.useMirroringForWest);
                     break;
                 case Direction.NorthWest:
-                    SetSprite(spriteData.northWest, spriteData.useMirroringForNorthWest);
+                    SetAnimation(spriteData.northEast, spriteData.useMirroringForNorthWest);
                     break;
             }
         }
-
-        private void SetSprite(Sprite sprite, bool useMirror)
+        else
         {
-            spriteRenderer.sprite = sprite;
-            spriteRenderer.flipX = useMirror;
+            AnimateSprite();
+        }
+    }
+
+    private void SetAnimation(SpriteData.DirectionalAnimation animation, bool mirror)
+    {
+        currentAnimation = animation;
+        currentFrame = 0; // Start at the first frame
+        animationTimer = 0f; // Reset the timer
+        isMirrored = mirror;
+
+        // Set the sprite for the initial frame
+        spriteRenderer.sprite = currentAnimation.sprites[currentFrame];
+        spriteRenderer.flipX = isMirrored;
+    }
+
+    private void AnimateSprite()
+    {
+        if (currentAnimation == null || currentAnimation.sprites.Length == 0)
+            return;
+
+        // Increment the timer based on the frame rate
+        animationTimer += Time.deltaTime;
+
+        if (animationTimer >= 1f / currentAnimation.fps)
+        {
+            // Move to the next frame in the animation
+            currentFrame = (currentFrame + 1) % currentAnimation.sprites.Length;
+            spriteRenderer.sprite = currentAnimation.sprites[currentFrame];
+            spriteRenderer.flipX = isMirrored;
+
+            // Reset the timer for the next frame
+            animationTimer = 0f;
         }
     }
 }

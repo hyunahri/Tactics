@@ -2,20 +2,25 @@
 
 namespace SpriteSystem
 {
-    [CreateAssetMenu(fileName = "SpriteData", menuName = "Character/SpriteData")]
+    [CreateAssetMenu(fileName = "SpriteData", menuName = "Graphics/SpriteData")]
     public class SpriteData : ScriptableObject
     {
-        public Sprite north;
-        public Sprite northEast;
-        public Sprite east;
-        public Sprite southEast;
-        public Sprite south;
-        public Sprite southWest;
-        public Sprite west;
-        public Sprite northWest;
+        [System.Serializable]
+        public class DirectionalAnimation
+        {
+            public Sprite[] sprites; // Sprites for the animation loop
+            public float fps = 10f;  // Frames per second
+        }
 
-        public bool useMirroringForWest; // Mirror east for west
-        public bool useMirroringForSouthWest; // Mirror southEast for southWest
-        public bool useMirroringForNorthWest; // Mirror northEast for northWest
+        public DirectionalAnimation north;
+        public DirectionalAnimation northEast;
+        public DirectionalAnimation east;
+        public DirectionalAnimation southEast;
+        public DirectionalAnimation south;
+
+
+        public bool useMirroringForWest => true; // Mirror east for west
+        public bool useMirroringForSouthWest => true; // Mirror southEast for southWest
+        public bool useMirroringForNorthWest => true; // Mirror northEast for northWest
     }
 }

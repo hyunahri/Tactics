@@ -2,8 +2,6 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor
-{
 
     [CustomPropertyDrawer(typeof(KeyValuePair<,>), true)]
     public class KeyValuePairDrawer : PropertyDrawer
@@ -21,4 +19,3 @@ namespace Editor
             EditorGUI.PropertyField(valueRect, valueProperty, GUIContent.none);
         }
     }
-}

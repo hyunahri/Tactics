@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Items
 {
     [CreateAssetMenu(menuName = "Items/Consumable")]
-    public class ConsumableTemplate : ScriptableObject
+    public class ConsumableTemplate : ItemTemplate
     {
         [SerializeField]public string Name;
         [SerializeField]public string Description;
@@ -18,5 +18,10 @@ namespace Items
         
         [Header("Effects")]
         [SerializeReference]public List<AbilityEffect> OnUseEffects = new List<AbilityEffect>();
+        
+        public override object ToInstance()
+        {
+            return new Consumable(this);
+        }
     }
 }

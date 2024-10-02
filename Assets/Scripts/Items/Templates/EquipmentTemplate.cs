@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Items
 {
     [CreateAssetMenu(menuName = "Items/Equipment")]
-    public class EquipmentTemplate : ScriptableObject
+    public class EquipmentTemplate : ItemTemplate
     {
         [Header("Identity")] 
         [SerializeField]public string Name;
@@ -32,5 +32,10 @@ namespace Items
         [Header("Features")] 
         [SerializeField]public List<Ability> Abilities = new List<Ability>();
         [SerializeField]public List<Pair<string,int>> Bonuses = new List<Pair<string, int>>();
+
+        public override object ToInstance()
+        {
+            return new Equipment(this);
+        }
     }
 }

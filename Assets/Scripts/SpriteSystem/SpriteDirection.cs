@@ -4,9 +4,9 @@ namespace SpriteSystem
 {
     public static class SpriteDirection
     {
-        public static Direction GetDirectionFromVector(Vector2 direction)
+        public static Direction GetDirectionFromVector(Vector3 direction)
         {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
             if (angle < 0) angle += 360;
 
             if (angle >= 337.5f || angle < 22.5f) return Direction.East;
